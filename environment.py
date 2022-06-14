@@ -126,10 +126,10 @@ class Environment:
                 self.running_array[genome_id] = False
                 continue
 
-            print(action[genome_id])
+            # print(action[genome_id])
 
             state_dist_array[genome_id], cur_d_angle, cur_angle = cur_car.update_by_step(self.screen, action[genome_id])
-            cur_reward_array[genome_id] = REWARD_ONE_LAP / (2 * np.pi) * cur_d_angle
+            cur_reward_array[genome_id] = REWARD_ONE_LAP / (2 * np.pi) * cur_d_angle - 1
             # test whether the agent finish the game
             if cur_angle > 2 * np.pi:
                 self.running_array[genome_id] = False
@@ -148,7 +148,7 @@ class Environment:
                 current_fitness_sum = 0
                 for fitness in fitness_history[genome_id][-21:-1]:
                     current_fitness_sum += fitness
-                if current_fitness_sum <= 10:
+                if current_fitness_sum <= 0:
                     self.running_array[genome_id] = False
                     self.car_list[genome_id].is_alive = False
                     # genome.fitness += DEAD_SCORE

@@ -87,11 +87,11 @@ def generate_map(seed=None,points_cnt=20):
 
     pygame.display.flip()
     #output the map
-    pygame.image.save(screen, '.\\maps\\map.png')
+    pygame.image.save(screen, './maps/map.png')
     pygame.quit()
 
     #save the starting point coordinates
-    with open('.\\maps\\map_start.txt','w') as f:
+    with open('./maps/map_start.txt','w') as f:
         f.write(str(point_list_outer[0][0])+' '+str(point_list_outer[0][1])+'\n')
         f.write(str(point_list_inner[0][0])+' '+str(point_list_inner[0][1])+'\n')
 

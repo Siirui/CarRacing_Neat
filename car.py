@@ -4,7 +4,7 @@ from common import *
 import math
 import numpy as np
 
-car_speed = 2
+car_speed = 3
 
 class Car:
     def __init__(self,image,pos,angle,is_auto=False,midx=510,midy=360) -> None:
@@ -177,7 +177,7 @@ class Car:
             d_angle=(cur_angle-self.last_angle)
         self.last_angle=cur_angle
         self.accumulate_angle+=d_angle
-        print(self.accumulate_angle)
+        # print(self.accumulate_angle)
         return d_angle
 
     def update_score(self):

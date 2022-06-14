@@ -15,7 +15,7 @@ import time
 CONFIG = './config-feedforward.txt'
 ep_step = 300
 generation_step = 1
-Training = False
+Training = True
 CHECKPOINT = 9
 
 def sigmoid(x):
@@ -24,7 +24,7 @@ def sigmoid(x):
 
 def eval_genomes(genomes, config):
     env = Environment()
-    env.start(seed=312)
+    env.start()
     net_array = {}
     fitness_history = {}
     for genome_id, genome in genomes:
@@ -69,7 +69,7 @@ def eval_genomes(genomes, config):
                     continue
                 genome.fitness += reward_array[genome_id]
                 fitness_history[genome_id].append(reward_array[genome_id])
-                print(genome.fitness)
+                # print(genome.fitness)
     env.close()
 
 
@@ -83,19 +83,30 @@ def run():
     pop.add_reporter(neat.StdOutReporter(True))
     pop.add_reporter(neat.Checkpointer(5))
 
-    pop.run(eval_genomes, 10)
-
-def evaluation():
-    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-%i' % CHECKPOINT)
-    winner = p.run(eval_genomes, 1)
-
+    winner = pop.run(eval_genomes, 50)
     nodes_name = {-1: "In0",
                   -2: "In1",
                   -3: "In2",
                   -4: "In3",
                   -5: "In4",
                   0: "act1"}
+    visualize.draw_net(config, winner, True, node_names=nodes_name)
+    visualize.draw_net(config, winner, True, node_names=nodes_name, prune_unused=True)
+    visualize.plot_stats(stats, ylog=False, view=True)
+    visualize.plot_species(stats, view=True)
+
+def evaluation():
+    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-%i' % CHECKPOINT)
+    winner = p.run(eval_genomes, 1)
+
+
     net = neat.nn.FeedForwardNetwork.create(winner, p.config)
+    nodes_name = {-1: "In0",
+                  -2: "In1",
+                  -3: "In2",
+                  -4: "In3",
+                  -5: "In4",
+                  0: "act1"}
     visualize.draw_net(p.config, winner, True, node_names=nodes_name)
 
     # env = Environment()
