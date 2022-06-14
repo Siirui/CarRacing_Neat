@@ -1,7 +1,7 @@
 '''
 Description: this file use pygame to generate map in png format
 Date: 2022-06-09 17:05:24
-LastEditTime: 2022-06-10 16:57:53
+LastEditTime: 2022-06-14 10:51:32
 '''
 
 import random
@@ -12,6 +12,7 @@ MIDDLE_POINT=(540,360)
 WINDOW_SIZE=(1080,720)
 PADDING=10
 BOUNDARY_COLOR=(150,41,255)
+WALL_WIDTH=20
 
 def is_out(pointx,pointy):
     """
@@ -45,7 +46,7 @@ def generate_random_points(cnt,dist_low,dist_high,last_dist_high=70):
             # generate outer points first
             px=MIDDLE_POINT[0]+dist*math.cos(angle)
             py=MIDDLE_POINT[1]+dist*math.sin(angle)
-            print(px,py)
+            # print(px,py)
             if not is_out(px,py):
                 break
         last_dist=dist
@@ -58,14 +59,14 @@ def generate_random_points(cnt,dist_low,dist_high,last_dist_high=70):
     return points_outer,points_inner
 
 def generate_map(seed=None,points_cnt=20):
-    
+
     if seed is not None:
         random.seed(seed)
     pygame.init()
     screen = pygame.display.set_mode((1080, 720), flags=pygame.HIDDEN)
     screen.fill((255, 255, 255))
     # pygame.draw.circle(screen, (0, 0, 0), MIDDLE_POINT, 10)
-    point_list_outer,point_list_inner=generate_random_points(points_cnt,25,100)
+    point_list_outer,point_list_inner=generate_random_points(points_cnt,70,100)
     #draw all the points
     pygame.display.flip()
     # #draw the outer points
@@ -73,17 +74,17 @@ def generate_map(seed=None,points_cnt=20):
     #     pygame.draw.circle(screen, BOUNDARY_COLOR, point, 5)
     #draw the lines between the outer points
     for i in range(len(point_list_outer)-1):
-        pygame.draw.line(screen, BOUNDARY_COLOR, point_list_outer[i], point_list_outer[i+1], 5)
-    pygame.draw.line(screen, BOUNDARY_COLOR, point_list_outer[-1], point_list_outer[0], 5)
+        pygame.draw.line(screen, BOUNDARY_COLOR, point_list_outer[i], point_list_outer[i+1], WALL_WIDTH)
+    pygame.draw.line(screen, BOUNDARY_COLOR, point_list_outer[-1], point_list_outer[0], WALL_WIDTH)
     # #draw the inner points
     # for point in point_list_inner:
-    #     pygame.draw.circle(screen, BOUNDARY_COLOR, point, 5)
-    
+    #     pygame.draw.circle(screen, BOUNDARY_COLOR, point, WALL_WIDTH)
+
     #draw the lines between the inner points
     for i in range(len(point_list_inner)-1):
-        pygame.draw.line(screen, BOUNDARY_COLOR, point_list_inner[i], point_list_inner[i+1], 5)
-    pygame.draw.line(screen, BOUNDARY_COLOR, point_list_inner[-1], point_list_inner[0], 5)
-    
+        pygame.draw.line(screen, BOUNDARY_COLOR, point_list_inner[i], point_list_inner[i+1], WALL_WIDTH)
+    pygame.draw.line(screen, BOUNDARY_COLOR, point_list_inner[-1], point_list_inner[0], WALL_WIDTH)
+
     pygame.display.flip()
     #output the map
     pygame.image.save(screen, '.\\maps\\map.png')

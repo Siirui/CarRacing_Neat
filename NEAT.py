@@ -16,7 +16,7 @@ CONFIG = './config-feedforward.txt'
 ep_step = 300
 generation_step = 1
 Training = False
-CHECKPOINT = 79
+CHECKPOINT = 9
 
 def sigmoid(x):
     return 1.0 / (1.0 + np.exp(-x))
@@ -24,7 +24,7 @@ def sigmoid(x):
 
 def eval_genomes(genomes, config):
     env = Environment()
-    env.start()
+    env.start(seed=312)
     net_array = {}
     fitness_history = {}
     for genome_id, genome in genomes:
